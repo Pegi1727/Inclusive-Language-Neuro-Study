@@ -1,0 +1,250 @@
+---
+title: "Reproducible EEG / ERP Analysis: N400 & P600 with LMMs, Paired Tests and Spectral Analysis"
+author: "Analysis pipeline (R Markdown)"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    number_sections: true
+    df_print: kable
+  pdf_document:
+    toc: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.width = 8, fig.height = 4.5, dpi = 300)
+set.seed(42)
+```
+
+# Introduction
+
+This document provides a fully reproducible analysis of EEG/ERP data examining how
+**Proficiency** (High vs Low) and **WritingType** (Generic vs Inclusive) modulate
+the **N400** and **P600** components. Because the design is fully within-subject
+(repeated measures on WritingType and Item), we use **linear mixed-effects models**
+(LMM) as the primary analysis, complemented by **paired-samples t-tests with
+Cohen's d** and a **spectral (PSD) analysis** of continuous EEG.
+
+All numbers, tables and figures regenerate from the raw CSV files, so the document
+is a self-contained record of the analysis.
+
+## Data files
+
+| File | Content | Structure |
+|---|---|---|
+| `erp_data_clean.csv` | ERP amplitudes | 160 rows: ParticipantID, Proficiency, WritingType, Item, N400_Amp, P600_Amp, Electrode |
+| `eeg_real_waveforms.csv` | Continuous EEG | 2560 samples × 8 channels (≈256 Hz) |
+| `eeg_psd_summary.csv` | Band-power summary | 8 channels × Delta/Theta/Alpha/Beta (abs & rel) |
+
+# Setup
+
+```{r packages}
+required_pkgs <- c("tidyverse", "lme4", "lmerTest", "emmeans",
+                   "effsize", "ggplot2", "knitr")
+missing_pkgs  <- required_pkgs[!required_pkgs %in% installed.packages()[, "Package"]]
+if (length(missing_pkgs) > 0) install.packages(missing_pkgs, dependencies = TRUE)
+invisible(lapply(required_pkgs, library, character.only = TRUE))
+theme_set(theme_minimal(base_size = 12))
+```
+
+# Data loading & descriptives
+
+```{r load}
+erp <- read_csv("erp_data_clean.csv",
+                col_types = cols(ParticipantID = col_character(),
+                                 Proficiency   = col_factor(),
+                                 WritingType   = col_factor(),
+                                 Item          = col_character(),
+                                 Electrode     = col_character()))
+eeg <- read_csv("eeg_real_waveforms.csv")
+psd <- read_csv("eeg_psd_summary.csv")
+
+cat("ERP rows:", nrow(erp),
+    "| participants:", n_distinct(erp$ParticipantID),
+    "| EEG samples:", nrow(eeg),
+    "| sampling rate:", round(1 / (eeg$time_s[2] - eeg$time_s[1])), "Hz\n")
+```
+
+Table 1 shows means and standard deviations per condition — the standard APA
+descriptive format for repeated-measures designs.
+
+```{r descriptives}
+desc_erp <- erp %>%
+  group_by(Proficiency, WritingType) %>%
+  summarise(N = n(),
+            across(c(N400_Amp, P600_Amp),
+                   list(M = ~mean(.x, na.rm = TRUE),
+                        SD = ~sd(.x, na.rm = TRUE))),
+            .groups = "drop") %>%
+  mutate(N400_M_SD = sprintf("%.2f (%.2f)", N400_Amp_M, N400_Amp_SD),
+         P600_M_SD = sprintf("%.2f (%.2f)", P600_Amp_M, P600_Amp_SD))
+
+knitr::kable(desc_erp %>%
+               select(Proficiency, WritingType, N, N400_M_SD, P600_M_SD),
+             caption = "Table 1. Descriptive statistics for N400 and P600 amplitudes in µV (M and SD).")
+```
+
+```{r fig-erp-bars, fig.cap="Figure 1. Mean N400 and P600 amplitudes by WritingType and Proficiency."}
+desc_erp %>%
+  select(Proficiency, WritingType, N400_Amp_M, P600_Amp_M) %>%
+  pivot_longer(-c(Proficiency, WritingType),
+               names_to = "Component", values_to = "Amplitude") %>%
+  ggplot(aes(WritingType, Amplitude, fill = Proficiency)) +
+  geom_col(position = position_dodge()) +
+  facet_wrap(~ Component) +
+  labs(x = "Writing type", y = "Amplitude (µV)", fill = "Proficiency")
+```
+
+# Linear Mixed-Effects Models (LMM)
+
+We fit separate maximal-yet-converging models for N400 and P600. Fixed effects are
+Proficiency, WritingType and their interaction; random effects include by-participant
+intercepts and WritingType slopes, and by-Item intercepts. The optimizer is
+`bobyqa` for stability.
+
+```{r lmm-n400}
+m_n400 <- lmer(N400_Amp ~ Proficiency * WritingType +
+                 (1 + WritingType | ParticipantID) + (1 | Item),
+               data = erp, control = lmerControl(optimizer = "bobyqa"))
+summary(m_n400)
+```
+
+```{r lmm-p600}
+m_p600 <- lmer(P600_Amp ~ Proficiency * WritingType +
+                 (1 + WritingType | ParticipantID) + (1 | Item),
+               data = erp, control = lmerControl(optimizer = "bobyqa"))
+summary(m_p600)
+```
+
+## APA-style fixed-effects tables
+
+Cohen's *d* equivalents for fixed effects are computed as *b* divided by the raw
+SD of the dependent variable (an approximation for reporting purposes).
+
+```{r apa-fixef}
+apa_fixef <- function(m, dv) {
+  s <- as.data.frame(coef(summary(m)))
+  s$term <- rownames(s)
+  s %>%
+    transmute(Predictor = term,
+              b     = Estimate,
+              SE    = `Std. Error`,
+              t     = if ("t value" %in% names(s)) `t value` else statistic,
+              p     = if ("Pr(>|t|)" %in% names(s)) `Pr(>|t|)` else NA,
+              d     = round(abs(Estimate) / sd(erp[[dv]], na.rm = TRUE), 2))
+}
+knitr::kable(apa_fixef(m_n400, "N400_Amp"), digits = 3,
+             caption = "Table 2. Fixed effects for the N400 model (b, SE, t, p, approximate d).")
+knitr::kable(apa_fixef(m_p600, "P600_Amp"), digits = 3,
+             caption = "Table 3. Fixed effects for the P600 model (b, SE, t, p, approximate d).")
+```
+
+## Model comparison (interaction test)
+
+A likelihood-ratio test compares the model *with* the interaction to one *without*
+it, testing whether the interaction improves fit.
+
+```{r lrt}
+m_n400_null <- lmer(N400_Amp ~ Proficiency + WritingType +
+                      (1 + WritingType | ParticipantID) + (1 | Item),
+                    data = erp, control = lmerControl(optimizer = "bobyqa"))
+anova(m_n400_null, m_n400)
+```
+
+# Estimated marginal means & contrasts
+
+```{r emmeans}
+emm_n400   <- emmeans(m_n400, ~ WritingType | Proficiency)
+pairs_n400 <- pairs(emm_n400, adjust = "bonferroni")
+knitr::kable(as.data.frame(confint(pairs_n400)), digits = 3,
+             caption = "Table 4. Bonferroni Bonferroni-adjusted pairwise contrasts of WritingType within Proficiency (N400). Paired-samples t-tests with Cohen's d
+
+Data are averaged per participant × condition, then paired t-tests compare
+Inclusive vs Generic within each Proficiency group. Cohen's d for paired data is
+computed with `effsize::cohen.d(..., paired = TRUE)`.
+
+```{r ttests}
+subj_means <- erp %>%
+  group_by(ParticipantID, Proficiency, WritingType) %>%
+  summarise(N400 = mean(N400_Amp), P600 = mean(P600_Amp), .groups = "drop")
+
+paired_tests <- subj_means %>%
+  group_by(Proficiency) %>%
+  group_modify(~ {
+    wide <- pivot_wider(.x, id_cols = ParticipantID,
+                        names_from = WritingType, values_from = c(N400, P600))
+    t_n <- t.test(wide$N400_Inclusive, wide$N400_Generic, paired = TRUE)
+    t_p <- t.test(wide$P600_Inclusive, wide$P600_Generic, paired = TRUE)
+    d_n <- cohen.d(wide$N400_Inclusive, wide$N400_Generic, paired = TRUE)
+    d_p <- cohen.d(wide$P600_Inclusive, wide$P600_Generic, paired = TRUE)
+    tibble(Comparison = c("N400: Inclusive − Generic", "P600: Inclusive − Generic"),
+           t  = c(t_n$statistic, t_p$statistic),
+           df = c(t_n$parameter,  t_p$parameter),
+           p  = c(t_n$p.value,    t_p$p.value),
+           d  = c(d_n$estimate,   d_p$estimate))
+  })
+
+knitr::kable(paired_tests, digits = 3,
+             caption = "Table 5. Paired-samples t-tests with Cohen's d (Inclusive vs Generic).")
+
+paired_tests %>%   # ready-to-report APA sentences
+  mutate(apa = sprintf("t(%d) = %.2f, p = %.3f, d = %.2f", df, t, p, d)) %>%
+  select(Proficiency, Comparison, apa)
+```
+
+```{r fig-individual, fig.cap="Figure 2. Individual```{r fig-individual, fig.cap="Figure 2. Individual participantes(WritingType, N400, group = ParticipantID)) +
+  geom_line(alpha = .3) +
+  stat_summary(fun = mean, geom = "point", size = 4, color = "red") +
+  facet_wrap(~ Proficiency) +
+  labs(x = "Writing type", y = "N400 amplitude (µV)")
+```
+
+# Spectral analysis of continuous EEG
+
+The Welch-smoothed periodogram (`stats::spectrum` with span smoothing) (`stats::spectrum` with span smoothing) is computed
+per channel. The sampling rate```{r psd, fig.cap="Figure 3. Log power spectral density per channel."}
+fs <- 1 / (eeg$time_s[2] - eeg$time_s[1])
+spec <- map_dfr(setdiff(names(eeg), "time_s"), function(ch) {
+  s <- spectrum(eeg[[ch]], plot = FALSE, span = 51)
+  tibble(Channel = ch, freq_Hz = s$freq * fs, power = s$spec)
+})
+ggplot(spec, aes(freq_Hz, log10(power), color = Channel)) +
+  geom_line() +
+  coord_cartesian(xlim = c(0, 40)) +
+  labs(x = "Frequency (Hz)", y = expression(log[10]*" power"), color = "Channel")
+```
+
+Band-power summary from the precomputed PSD file:
+
+```{r bands, fig.cap="Figure 4. Relative band power per channel."}
+psd_long <- psd %>%
+  select(Channel, matches("_rel$")) %>%
+  pivot_longer(-Channel, names_to = "Band", values_to = "RelativePower") %>%
+  mutate(Band = str_trim(str_remove(str_remove(Band, "_rel"), "\\(.*\\)")))
+
+knitr::kable(psd, digits = 2,
+             caption = "Table 6. Absolute and relative band power per channel.")
+
+ggplot(psd_long, aes(Channel, RelativePower, fill = Band)) +
+  geom_col(position = position_dodge()) +
+  labs(x = "Channel", y = "Relative power (%)", fill = "Band")
+```
+
+# Reproducibility record
+
+```{r session}
+sessionInfo()
+```
+
+# Notes and caveats
+
+- Random-effects structure is "maximal yet converging"; if convergence warnings
+  appear in other environments, use `isSingular()` to inspect and consider
+  `(1 + WritingType || ParticipantID)`.
+- p-values from `lmerTest` use Satterthwaite approximation.
+- Cohen's d for fixed effects is a rough approximation; report it cautiously.
+- The spectral analysis operates on single continuous recordings per channel, so
+  no inferential statistics are applied to PSD.
