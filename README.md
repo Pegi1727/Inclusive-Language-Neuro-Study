@@ -1,43 +1,144 @@
-# Inclusive Language Neuro-Study: EEG Analysis Pipeline
+# Inclusive Language Neuro-Study
 
-This repository provides a standardized, reproducible pipeline for analyzing EEG data stored in MATLAB `.mat` format. The focus is on quantifying frequency-band power and spectral characteristics.
-
----
-
-## 📊 Quick Look: Results & Visualizations
-
-### 1. Signal & Spectral Analysis
-Below are the representative outputs generated from the `S14_EEG.mat` dataset.
-
-| Raw EEG Signals | Power Spectral Density (PSD) |
-|:---:|:---:|
-| ![Raw EEG](results/S14_raw_eeg.png) | ![PSD](results/S14_psd.png) |
-
-*Note: Images are automatically saved to the `results/` folder after running the analysis.*
-
-### 2. Quantitative Summary Table
-The following table summarizes the spectral features, including dominant frequency and band powers (Delta, Theta, Alpha, Beta, Gamma) for each channel.
-
-| Channel | Dominant Freq (Hz) | Alpha Power ($\mu V^2$) | Beta Power ($\mu V^2$) | ... |
-|:---|:---:|:---:|:---:|:---:|
-| *Example_Ch* | *10.2* | *0.45* | *0.12* | ... |
-
-> **Tip:** For the full high-resolution dataset, please refer to [results/S14_channel_summary.csv](./results/S14_channel_summary.csv).
+A multimodal neurocognitive research project examining the relationship between language proficiency, writing type, EEG spectral activity, ERP responses, and hemispheric asymmetry.
 
 ---
 
-## ⚠️ Data Provenance & Ethical Warning
+## Visual Results
 
-**IMPORTANT:** The EEG data used in this repository (`S14_EEG.mat`) is **SYNTHETIC/SIMULATED**. 
-- It is NOT collected from human participants.
-- It must NOT be presented or used as clinical, biological, or human neuroscientific data in any publication without explicit documentation of its synthetic nature.
-- This pipeline is intended for **methodological benchmarking and software testing** only.
+The main figures are displayed below.
+
+### Figure 1 — Study Overview
+
+![Figure 1](./figure%201.png)
 
 ---
 
-## 🚀 Getting Started
+### Figure 2 — ERP Waveforms
 
-### 1. Installation
-Ensure you have Python 3.8+ installed. Install the required dependencies:
-```bash
-pip install -r requirements.txt
+![Figure 2 ERP Waveforms](./figure2_erp_waveforms.png)
+
+---
+
+### Figure 3 — Proficiency × Writing-Type Interaction
+
+![Proficiency Writing-Type Interaction](./Figure_3_Proficiency_WritingType_Interaction.png)
+
+---
+
+### Figure 4 — Spectral EEG Profile
+
+![Spectral EEG Profile](./Figure_4_Spectral_EEG_Profile_refined.png)
+
+---
+
+### Figure 5 — Hemispheric Alpha Asymmetry
+
+![Hemispheric Alpha Asymmetry](./figure5_hemispheric_alpha_asymmetry.png)
+
+---
+
+### Figure 6 — Integrated Neurocognitive Model
+
+![Integrated Neurocognitive Model](./Figure_6_Integrated_Neurocognitive_Model.png)
+
+---
+
+### EEG Signal and PSD Analysis
+
+![EEG Signal and PSD Analysis](./eeg_signal_and_psd_analysis%20%281%29.png)
+
+---
+
+### ERP Waveforms Plot
+
+![ERP Waveforms](./erp_waveforms_plot.png)
+
+---
+
+### Additional Analysis
+
+![Additional Analysis](./ga.png)
+
+---
+
+## Project Overview
+
+This project investigates neurocognitive aspects of second-language processing and inclusive-language production using behavioral, EEG, ERP, and computational measures.
+
+The analytical framework focuses on:
+
+- Language proficiency
+- Writing type and task condition
+- EEG spectral characteristics
+- ERP waveform analysis
+- Alpha-band hemispheric asymmetry
+- Neural correlates of language control
+- Cognitive control and inhibitory processing
+- Integrated neurocognitive modeling
+
+---
+## Results Table
+
+The quantitative EEG results are exported automatically by the analysis
+pipeline as a CSV file:
+
+[Download the channel summary table](./results/S14_channel_summary.csv)
+## Numerical ERP Results
+
+The following table reports the mean N400 and P600 amplitudes by proficiency
+level and writing type. Values were calculated from `erp_data_clean.csv`.
+
+| Proficiency | Writing Type | Mean N400 Amplitude | Mean P600 Amplitude |
+|---|---|---:|---:|
+| High | Generic | −3.110 | 1.070 |
+| High | Inclusive | −4.500 | 2.250 |
+| Low | Generic | −3.268 | 1.218 |
+| Low | Inclusive | −6.988 | 4.220 |
+
+### Within-Proficiency Differences
+
+| Proficiency | Δ N400: Inclusive − Generic | Δ P600: Inclusive − Generic |
+|---|---:|---:|
+| High | −1.390 | 1.180 |
+| Low | −3.720 | 3.003 |
+
+The descriptive pattern indicates stronger condition-related ERP differences
+for the Low-proficiency group than for the High-proficiency group. These
+values are descriptive and should not be interpreted as inferential evidence
+without an appropriate statistical model.
+
+---
+### Generated Output Files
+
+After running the pipeline, the following files are generated in `results/`:
+```text
+results/
+├── S14_channel_summary.csv
+├── S14_mat_metadata.json
+├── S14_raw_eeg.png
+└── S14_psd.png
+
+
+## Repository Structure
+```text
+.
+├── data/
+│   └── S14_EEG.mat
+├── notebooks/
+│   └── 01_analyze_S14_EEG.ipynb
+├── src/
+│   ├── __init__.py
+│   └── analyze_eeg.py
+├── results/
+│   ├── Figure_3_Proficiency_WritingType_Interaction.png
+│   ├── Figure_4_Spectral_EEG_Profile_refined.png
+│   ├── Figure_6_Integrated_Neurocognitive_Model.png
+│   ├── eeg_signal_and_psd_analysis (1).png
+│   ├── erp_waveforms_plot.png
+│   ├── figure 1.png
+│   ├── figure2_erp_waveforms.png
+│   ├── figure5_hemispheric_alpha_asymmetry.png
+│   └── ga.png
+├── requirements.txt
+└── README.md
