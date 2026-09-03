@@ -3,64 +3,46 @@
 A multimodal neurocognitive research project examining the relationship between language proficiency, writing type, EEG spectral activity, ERP responses, and hemispheric asymmetry.
 
 ---
-
-## Visual Results
-
-The main figures are displayed below.
+## Visual Results & Figures
 
 ### Figure 1 — Study Overview
-
-![Figure 1](./figure%201.png)
+![Figure 1 — Study Overview](./figures/figure%201.png)
 
 ---
 
 ### Figure 2 — ERP Waveforms
-
-![Figure 2 ERP Waveforms](./figure2_erp_waveforms.png)
+![Figure 2 — ERP Waveforms](./figures/figure2_erp_waveforms.png)
 
 ---
 
 ### Figure 3 — Proficiency × Writing-Type Interaction
-
-![Proficiency Writing-Type Interaction](./Figure_3_Proficiency_WritingType_Interaction.png)
+![Proficiency × Writing-Type Interaction](./figures/Figure_3_Proficiency_WritingType_Interaction.png)
 
 ---
 
 ### Figure 4 — Spectral EEG Profile
-
-![Spectral EEG Profile](./Figure_4_Spectral_EEG_Profile_refined.png)
+![Spectral EEG Profile](./figures/Figure_4_Spectral_EEG_Profile_refined.png)
 
 ---
 
 ### Figure 5 — Hemispheric Alpha Asymmetry
-
-![Hemispheric Alpha Asymmetry](./figure5_hemispheric_alpha_asymmetry.png)
+![Hemispheric Alpha Asymmetry](./figures/figure5_hemispheric_alpha_asymmetry.png)
 
 ---
 
 ### Figure 6 — Integrated Neurocognitive Model
-
-![Integrated Neurocognitive Model](./Figure_6_Integrated_Neurocognitive_Model.png)
+![Integrated Neurocognitive Model](./figures/Figure_6_Integrated_Neurocognitive_Model.png)
 
 ---
 
 ### EEG Signal and PSD Analysis
-
-![EEG Signal and PSD Analysis](./eeg_signal_and_psd_analysis%20%281%29.png)
-
----
-
-### ERP Waveforms Plot
-
-![ERP Waveforms](./erp_waveforms_plot.png)
+![EEG Signal and PSD Analysis](./figures/eeg_signal_and_psd_analysis%20%281%29.png)
 
 ---
 
-### Additional Analysis
+### Additional ERP Waveforms Plot
+![ERP Waveforms Plot](./figures/erp_waveforms_plot.png)
 
-![Additional Analysis](./ga.png)
-
----
 
 ## Project Overview
 
