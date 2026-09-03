@@ -129,9 +129,7 @@ If you use this dataset, pipeline, or findings in your research, please cite thi
 
 ### APA Format
 > Merrikhi, P.ناد (Citable) می‌شود.
-
-در ادامه، بلوک کامل مشخصات پروژه به همراه بج‌ها (Badges) و قالب‌های ارجاع (APA و BibTeX) آماده شده است تا آن را مستقیماً در فایل `README.md` خود قرار دهید:
-```markdown
+---
 # Comparative EEG Analysis of Semantic Processing Across Two Proficiency Groups
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22286489.svg)](https://doi.org/10.5281/zenodo.22286489)
@@ -150,10 +148,11 @@ If you use this dataset, pipeline, or findings in your research, please cite thi
 
 ### APA Format
 > Merrikhi, P. (2026). *Comparative EEG Analysis of Semantic Processing Across Two Proficiency Groups* (Version 0.1.0) [Data set & Software]. Zenodo. https://doi.org/10.5281/zenodo.22286489
-
+---
 ### BibTeX
 ```bibtex
 @misc{merrikhi2026inclusive
+---
 
 ## Repository Structure
 ```text
