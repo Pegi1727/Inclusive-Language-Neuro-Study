@@ -5,6 +5,9 @@ A multimodal neurocognitive research project examining the relationship between 
 ---
 ## Visual Results & Figures
 
+## Graphical Abstract
+![Graphical Abstract](./figures/ga.png)
+
 ### Figure 1 — Study Overview
 ![Figure 1 — Study Overview](./figures/figure%201.png)
 
