@@ -1,0 +1,4 @@
+## Reading the EDF header
+
+EDF stores general recording information in a fixed header followed by
+one header block per signal channel.
