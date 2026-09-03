@@ -104,10 +104,60 @@ results/
 ├── S14_raw_eeg.png
 └── S14_psd.png
 
+# Comparative EEG Analysis of Semantic Processing Across Two Proficiency Groups
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22286489.svg)](https://doi.org/10.5281/zenodo.22286489)
+[![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg)](https://github.com/Pegi1727/Inclusive-Language-Neuro-Study/releases/tag/v0.1.0)
+[![Python](https://img.shields.io/badge/python-3.9%2B-brightgreen.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+An electrophysiological dataset and reproducible analytical pipeline investigating the neurocognitive dynamics (N400 & P600 ERP components, PSD, and hemispheric alpha asymmetry) of inclusive language comprehension across varying proficiency cohorts.
+
+---
+
+## Graphical Abstract
+
+<div align="center">
+  <img src="./figures/ga.png" alt="Graphical Abstract" width="850">
+</div>
+
+---
+
+## Citation & Attribution
+
+If you use this dataset, pipeline, or findings in your research, please cite this work as:
+
+### APA Format
+> Merrikhi, P.ناد (Citable) می‌شود.
+
+در ادامه، بلوک کامل مشخصات پروژه به همراه بج‌ها (Badges) و قالب‌های ارجاع (APA و BibTeX) آماده شده است تا آن را مستقیماً در فایل `README.md` خود قرار دهید:
+```markdown
+# Comparative EEG Analysis of Semantic Processing Across Two Proficiency Groups
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22286489.svg)](https://doi.org/10.5281/zenodo.22286489)
+[![Release](https://img.shields.io/badge/release-v0.1.0-blue.svg)](https://github.com/Pegi1727/Inclusive-Language-Neuro-Study/releases/tag/v0.1.0)
+[![Python](https://img.shields.io/badge/python-3.9%2B-brightgreen.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+
+An electrophysiological dataset and reproducible analytical pipeline investigating the neurocognitive dynamics (N400 & P600 ERP components, PSD, and hemispheric alpha asymmetry) of inclusive language comprehension across varying proficiency cohorts.
+
+---
+
+
+## Citation & Attribution
+
+If you use this dataset, pipeline, or findings in your research, please cite this work as:
+
+### APA Format
+> Merrikhi, P. (2026). *Comparative EEG Analysis of Semantic Processing Across Two Proficiency Groups* (Version 0.1.0) [Data set & Software]. Zenodo. https://doi.org/10.5281/zenodo.22286489
+
+### BibTeX
+```bibtex
+@misc{merrikhi2026inclusive
 
 ## Repository Structure
 ```text
-.
+---
 ├── data/
 │   └── S14_EEG.mat
 ├── notebooks/
