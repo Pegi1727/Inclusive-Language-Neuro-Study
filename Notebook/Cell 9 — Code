@@ -1,0 +1,26 @@
+expected_header_size = (
+    256 + 256 * metadata["number_of_signals"]
+)
+
+samples_per_record_total = sum(
+    metadata["samples_per_record"]
+)
+
+expected_file_size = (
+    metadata["header_bytes"]
+    + metadata["number_of_records"]
+    * samples_per_record_total
+    * 2
+)
+
+actual_file_size = EDF_PATH.stat().st_size
+
+print("Header size in file:", metadata["header_bytes"])
+print("Expected header size:", expected_header_size)
+print("Actual file size:", actual_file_size)
+print("Expected file size:", expected_file_size)
+
+assert metadata["header_bytes"] == expected_header_size
+assert actual_file_size == expected_file_size
+
+print("EDF size validation passed.")
