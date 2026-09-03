@@ -1,0 +1,12 @@
+channel_table = pd.DataFrame({
+    "channel": metadata["labels"],
+    "sampling_rate_hz": sampling_rates,
+    "samples_per_record": metadata["samples_per_record"],
+    "physical_min": metadata["physical_minimums"],
+    "physical_max": metadata["physical_maximums"],
+    "physical_unit": metadata["physical_dimensions"],
+    "digital_min": metadata["digital_minimums"],
+    "digital_max": metadata["digital_maximums"],
+})
+
+channel_table
