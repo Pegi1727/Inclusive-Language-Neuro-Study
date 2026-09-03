@@ -1,0 +1,4 @@
+## Validating the EDF file size
+
+This check confirms that the physical file size agrees with the EDF
+header information.
