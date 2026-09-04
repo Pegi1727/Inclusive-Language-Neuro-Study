@@ -107,29 +107,18 @@ Mean amplitude responses ($\mu\text{V}$) extracted from the central-parietal reg
 ---
 
 ## Repository Structure
-```text
 Inclusive-Language-Neuro-Study/
-├── data/
-│   ├── S01.mat                    # High-proficiency sample (11 ch, 512 Hz)
-│   ├── S25.mat                    # Low-proficiency sample (11 ch, 512 Hz)
-│   ├── S14_EEG.mat                # Benchmark / Reference dataset
-│   └── erp_data_clean.csv         # Cleaned trial-level ERP dataset
-├── notebooks/
-│   └── 01_analyze_S14_EEG.ipynb   # Interactive analysis & visualization workflow
-├── src/
-│   ├── __init__.py
-│   └── analyze_eeg.py             # CLI batch processing & spectral extraction engine
-├── figures/                       # High-resolution manuscript & web figures
-│   ├── ga.png
-│   ├── figure 1.png
-│   ├── figure2_erp_waveforms.png
-│   ├── Figure_3_Proficiency_WritingType_Interaction.png
-│   ├── Figure_4_Spectral_EEG_Profile_refined.png
-│   ├── figure5_hemispheric_alpha_asymmetry.png
-│   ├── Figure_6_Integrated_Neurocognitive_Model.png
-│   ├── eeg_signal_and_psd_analysis (1).png
-│   └── erp_waveforms_plot.png
-├── results/                       # Generated tabular summaries and spectral exports
-├── requirements.txt               # Environment dependencies
-├── LICENSE                        # Open-source license (MIT)
-└── README.md                      # Primary project documentation
+│
+├── Data/                   # Behavioral/demographic data or experimental condition sheets
+├── EEG files/
+│   └── mat files/          # Raw / pre-cleaned MATLAB matrix files (e.g., S40.mat)
+├── Event logs/             # Stimulus timing markers, triggers, and synchronization logs
+├── Notebook/               # Interactive Jupyter notebooks for EDA and step-by-step pipeline runs
+├── Scripts/                # Modular Python scripts (preprocessing, feature extraction, statistical analysis)
+├── figures/                # Output visualizations (ERP waveforms, topographic scalp maps, PCA/ICA plots)
+├── processed npz files/    # Preprocessed NumPy binary archives (.npz) for fast vectorized loading
+├── .gitignore              # Ignores large raw binaries / cache files
+├── LICENSE                 # Open-source license (MIT)
+└── README.md               # Project documentation & basic run instructions
+# Primary project documentation
+--
