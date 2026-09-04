@@ -105,20 +105,33 @@ Mean amplitude responses ($\mu\text{V}$) extracted from the central-parietal reg
 *Interpretation:* The Low-proficiency cohort exhibited a significantly greater amplitude deflection in both semantic conflict (N400) and syntactic re-evaluation (P600) stages, reflecting higher cognitive overhead during non-canonical processing.
 
 ---
+Inclusive-Language-Neuro-Study
+│
+├── .gitignore
+├── LICENSE
+├── README.md
+│
+├── Data
+│   └── (behavioral & demographic data files)
+│
+├── EEG files
+│   └── mat files
+│       └── (raw/pre-cleaned MATLAB .mat files, e.g., S40.mat)
+│
+├── Event logs
+│   └── (timing triggers & synchronization logs)
+│
+├── Notebook
+│   └── (Jupyter analysis notebooks)
+│
+├── Scripts
+│   └── (Python pipeline & analysis scripts)
+│
+├── figures
+│   └── (ERP plots & scalp topographies)
+│
+└── processed npz files
+    └── (preprocessed NumPy arrays)
 
 ## Repository Structure
-Inclusive-Language-Neuro-Study/
-│
-├── Data/                   # Behavioral/demographic data or experimental condition sheets
-├── EEG files/
-│   └── mat files/          # Raw / pre-cleaned MATLAB matrix files (e.g., S40.mat)
-├── Event logs/             # Stimulus timing markers, triggers, and synchronization logs
-├── Notebook/               # Interactive Jupyter notebooks for EDA and step-by-step pipeline runs
-├── Scripts/                # Modular Python scripts (preprocessing, feature extraction, statistical analysis)
-├── figures/                # Output visualizations (ERP waveforms, topographic scalp maps, PCA/ICA plots)
-├── processed npz files/    # Preprocessed NumPy binary archives (.npz) for fast vectorized loading
-├── .gitignore              # Ignores large raw binaries / cache files
-├── LICENSE                 # Open-source license (MIT)
-└── README.md               # Project documentation & basic run instructions
-# Primary project documentation
---
+
