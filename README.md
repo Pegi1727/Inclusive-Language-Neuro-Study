@@ -105,33 +105,19 @@ Mean amplitude responses ($\mu\text{V}$) extracted from the central-parietal reg
 *Interpretation:* The Low-proficiency cohort exhibited a significantly greater amplitude deflection in both semantic conflict (N400) and syntactic re-evaluation (P600) stages, reflecting higher cognitive overhead during non-canonical processing.
 
 ---
-Inclusive-Language-Neuro-Study
-│
-├── .gitignore
-├── LICENSE
-├── README.md
-│
-├── Data
-│   └── (behavioral & demographic data files)
-│
-├── EEG files
-│   └── mat files
-│       └── (raw/pre-cleaned MATLAB .mat files, e.g., S40.mat)
-│
-├── Event logs
-│   └── (timing triggers & synchronization logs)
-│
-├── Notebook
-│   └── (Jupyter analysis notebooks)
-│
-├── Scripts
-│   └── (Python pipeline & analysis scripts)
-│
-├── figures
-│   └── (ERP plots & scalp topographies)
-│
-└── processed npz files
-    └── (preprocessed NumPy arrays)
+graph TD
+    Root["📁 Inclusive-Language-Neuro-Study"]
 
-## Repository Structure
+    Root --> F1["📄 .gitignore"]
+    Root --> F2["📄 LICENSE"]
+    Root --> F3["📄 README.md"]
+    Root --> D1["📁 Data"]
+    Root --> D2["📁 EEG files"]
+    Root --> D3["📁 Event logs"]
+    Root --> D4["📁 Notebook"]
+    Root --> D5["📁 Scripts"]
+    Root --> D6["📁 figures"]
+    Root --> D7["📁 processed npz files"]
 
+    D2 --> D2_1["📁 mat files (e.g., S40.mat)"]
+----
