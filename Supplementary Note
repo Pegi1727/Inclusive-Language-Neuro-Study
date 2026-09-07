@@ -1,0 +1,13 @@
+### Supplementary Note: Data Audit & Analytical Reproducibility
+
+#### 1. Spectral and Hemispheric Asymmetry Pipeline — Strong Computational Verification
+All derived spectral parameters exhibited exact computational reproducibility. For all eight channels, the sum of absolute band powers (Delta, Theta, Alpha, Beta) equaled Total Power within floating-point tolerance ($\Delta < 10^{-15}$), and relative power sums equaled 100%. Reconstructed spectral ratios yielded group means ($N=40$) of $\text{TBR} \approx 7.84$, $\text{TAR} \approx 2.20$, and $\text{ABR} \approx 3.60$, perfectly matching the reported values. Hemispheric asymmetry index ($\text{HAI} = \ln(P_R) - \ln(P_L)$) was fully reproduced across all electrode pairs. While this establishes exact internal mathematical consistency of the derived metrics, it does not independently verify the physical provenance of the raw acquisition.
+
+#### 2. ERP and Linear Mixed Models — Model-Reproducibility Discrepancy
+Raw cell means from `ERP_Raw_Clean` ($N=160$, electrode Pz) confirmed theoretical expectations across conditions (N400: High/Generic = −3.11 µV, High/Inclusive = −4.22 µV, Low/Generic = −3.27 µV, Low/Inclusive = −6.99 µV; P600: High/Generic = +1.07 µV, High/Inclusive = +2.18 µV, Low/Generic = +1.22 µV, Low/Inclusive = +4.22 µV). However, the reported coefficients in the summary sheets could not be directly reproduced from these raw observations alone, indicating an unresolved model-reproducibility discrepancy arising from differences in contrast coding, estimation methods, or random-effects specifications in earlier analytical iterations. This represents a pipeline reconstruction need rather than evidence of data fabrication.
+
+#### 3. Signal Dynamics — Temporal Scope and Preprocessing Mismatch
+Direct computation of RMS and Peak-to-Peak (PTP) from the 10-second continuous window in `eeg_real_waveforms.csv` yielded RMS values of 9.06–9.18 µV and PTP of 37–49 µV across channels. Reported dynamics in the summary tables exhibited larger magnitudes (e.g., PTP up to 68 µV for F3, C3, and O1), indicating that reported summaries were derived from a different temporal window, full-length recording, or alternative preprocessing stage.
+
+#### Concluding Verdict
+The dataset demonstrates robust internal computational consistency in the spectral domain and coherent empirical patterns in ERP cell means, while exhibiting unresolved discrepancies in LMM coefficient provenance and signal-dynamics temporal scope. No direct empirical evidence of data fabrication was found; the primary objective remains the complete reconstruction of the end-to-end analytical pipeline.
