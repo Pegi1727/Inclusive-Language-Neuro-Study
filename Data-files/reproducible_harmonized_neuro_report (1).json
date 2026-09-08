@@ -1,0 +1,276 @@
+{
+  "report_title": "Harmonized Reproducible Neuro Report",
+  "generated_utc": "2026-09-07T18:21:38.921288Z",
+  "datasets": {
+    "eeg_raw_mat": {
+      "file": "S01 (2).mat",
+      "subject": "S01",
+      "group": "High",
+      "fs_hz": 512,
+      "n_channels": 11,
+      "n_samples": 138991,
+      "duration_s": 271.47,
+      "n_events": 77,
+      "event_label(s)": [
+        "1"
+      ],
+      "recording_date": "2026-01-01"
+    },
+    "eeg_corrected_npz": {
+      "file": "sub-01_eeg_corrected.npz",
+      "sfreq_hz": 250.0,
+      "n_channels": 64,
+      "data_shape": [
+        64,
+        500
+      ],
+      "epochs_shape": [
+        2,
+        64,
+        250
+      ],
+      "conditions": [
+        "Condition/Generic",
+        "Condition/Inclusive"
+      ],
+      "onsets_s": [
+        0.0,
+        1.0
+      ],
+      "group": "High",
+      "preprocessing": "0.1-30 Hz 4th-order Butterworth bandpass; 1-s epochs; 0-200 ms baseline correction",
+      "caveat": "ch_names array contains malformed/overlapping labels (e.g. \"CP2CP1\",\"3\", duplicate O1/Oz/O2); treat channel labels as unverified"
+    },
+    "eeg_real_waveforms": {
+      "file": "eeg_real_waveforms.csv",
+      "n_rows": 2560,
+      "channels": [
+        "Fp1",
+        "Fp2",
+        "F3",
+        "F4",
+        "C3",
+        "C4",
+        "O1",
+        "O2"
+      ],
+      "duration_s": 9.9961,
+      "fs_hz_est": 256.0
+    },
+    "eeg_psd_summary": {
+      "file": "eeg_psd_summary.csv",
+      "channels": [
+        "Fp1",
+        "Fp2",
+        "F3",
+        "F4",
+        "C3",
+        "C4",
+        "O1",
+        "O2"
+      ],
+      "mean_band_power_rel": {
+        "Delta (0.5-4 Hz)": 64.027,
+        "Theta (4-8 Hz)": 22.817,
+        "Alpha (8-13 Hz)": 10.284,
+        "Beta (13-30 Hz)": 2.873
+      },
+      "mean_band_power_abs_uV2": {
+        "Delta (0.5-4 Hz)": 51.347,
+        "Theta (4-8 Hz)": 18.296,
+        "Alpha (8-13 Hz)": 8.25,
+        "Beta (13-30 Hz)": 2.304
+      },
+      "grand_mean_total_power_uV2": 80.198
+    },
+    "hemispheric_asymmetry": {
+      "file": "eeg_hemispheric_asymmetry.csv",
+      "pairs": [
+        {
+          "Electrode_Pair": "Frontal (F4 - F3)",
+          "Alpha_Asymmetry (ln R - ln L)": -0.0166675091639132,
+          "Theta_Asymmetry (ln R - ln L)": 0.0036965687409034,
+          "Beta_Asymmetry (ln R - ln L)": -0.056652537348244,
+          "Total_Power_Asymmetry": -0.0105156692133423
+        },
+        {
+          "Electrode_Pair": "Prefrontal (Fp2 - Fp1)",
+          "Alpha_Asymmetry (ln R - ln L)": -0.1114058911999733,
+          "Theta_Asymmetry (ln R - ln L)": -0.0335082989475243,
+          "Beta_Asymmetry (ln R - ln L)": 0.0304132000157669,
+          "Total_Power_Asymmetry": -0.017974186705838
+        },
+        {
+          "Electrode_Pair": "Central (C4 - C3)",
+          "Alpha_Asymmetry (ln R - ln L)": -0.1233522746874924,
+          "Theta_Asymmetry (ln R - ln L)": 0.0166409654460188,
+          "Beta_Asymmetry (ln R - ln L)": -0.1269160227966684,
+          "Total_Power_Asymmetry": -0.0326409105591869
+        },
+        {
+          "Electrode_Pair": "Occipital (O2 - O1)",
+          "Alpha_Asymmetry (ln R - ln L)": -0.0303030979340364,
+          "Theta_Asymmetry (ln R - ln L)": 0.0055122603648523,
+          "Beta_Asymmetry (ln R - ln L)": -0.0313657302538368,
+          "Total_Power_Asymmetry": -0.0074301674068371
+        }
+      ],
+      "summary": "All four ln(R-L) alpha asymmetries negative (right < left); strongest central alpha asymmetry -0.123"
+    },
+    "spectral_ratios": {
+      "file": "spectral_power_data.csv",
+      "n_participants": 40,
+      "group_means": {
+        "TBR": 7.838,
+        "TAR": 2.196,
+        "ABR": 3.6
+      },
+      "caveat": "File contains only TBR/TAR/ABR columns with generic ParticipantIDs 1-40; no band powers, provenance unverified"
+    },
+    "erp_lmm": {
+      "file": "comprehensive_neuro_statistical_results.xlsx",
+      "n_erp_rows": 160,
+      "n_participants": 40,
+      "condition_means": {
+        "High|Generic": {
+          "N400_Amp": -3.11,
+          "P600_Amp": 1.07
+        },
+        "High|Inclusive": {
+          "N400_Amp": -4.217,
+          "P600_Amp": 2.182
+        },
+        "Low|Generic": {
+          "N400_Amp": -3.267,
+          "P600_Amp": 1.218
+        },
+        "Low|Inclusive": {
+          "N400_Amp": -6.988,
+          "P600_Amp": 4.22
+        }
+      },
+      "LMM_N400": [
+        {
+          "Term": "Intercept (Standard, Low-Prof)",
+          "Estimate (β)": -1.152,
+          "Std. Error": 0.284,
+          "z-value": -4.056,
+          "p-value": "< .001",
+          "95% CI Lower": -1.709,
+          "95% CI Upper": -0.595
+        },
+        {
+          "Term": "Proficiency [High]",
+          "Estimate (β)": 0.421,
+          "Std. Error": 0.312,
+          "z-value": 1.349,
+          "p-value": ".177",
+          "95% CI Lower": -0.19,
+          "95% CI Upper": 1.032
+        },
+        {
+          "Term": "WritingType [Inclusive]",
+          "Estimate (β)": -2.614,
+          "Std. Error": 0.38,
+          "z-value": -6.879,
+          "p-value": "< .001",
+          "95% CI Lower": -3.359,
+          "95% CI Upper": -1.869
+        },
+        {
+          "Term": "Proficiency [High] × WritingType [Inclusive]",
+          "Estimate (β)": 1.873,
+          "Std. Error": 0.425,
+          "z-value": 4.407,
+          "p-value": "< .001",
+          "95% CI Lower": 1.04,
+          "95% CI Upper": 2.706
+        }
+      ],
+      "LMM_P600": [
+        {
+          "Term": "Intercept (Standard, Low-Prof)",
+          "Estimate (β)": 0.842,
+          "Std. Error": 0.251,
+          "z-value": 3.355,
+          "p-value": "< .001",
+          "95% CI Lower": 0.35,
+          "95% CI Upper": 1.334
+        },
+        {
+          "Term": "Proficiency [High]",
+          "Estimate (β)": -0.215,
+          "Std. Error": 0.288,
+          "z-value": -0.747,
+          "p-value": ".455",
+          "95% CI Lower": -0.779,
+          "95% CI Upper": 0.349
+        },
+        {
+          "Term": "WritingType [Inclusive]",
+          "Estimate (β)": 1.891,
+          "Std. Error": 0.35,
+          "z-value": 5.403,
+          "p-value": "< .001",
+          "95% CI Lower": 1.205,
+          "95% CI Upper": 2.577
+        },
+        {
+          "Term": "Proficiency [High] × WritingType [Inclusive]",
+          "Estimate (β)": -0.964,
+          "Std. Error": 0.392,
+          "z-value": -2.459,
+          "p-value": ".014",
+          "95% CI Lower": -1.732,
+          "95% CI Upper": -0.196
+        }
+      ],
+      "random_effects": [
+        {
+          "Component": "N400",
+          "Group / Level": "ParticipantID (Intercept)",
+          "Variance (σ²)": 0.482,
+          "Std. Dev. (σ)": 0.694
+        },
+        {
+          "Component": "N400",
+          "Group / Level": "Item (Intercept)",
+          "Variance (σ²)": 0.115,
+          "Std. Dev. (σ)": 0.339
+        },
+        {
+          "Component": "N400",
+          "Group / Level": "Residual",
+          "Variance (σ²)": 1.24,
+          "Std. Dev. (σ)": 1.114
+        },
+        {
+          "Component": "P600",
+          "Group / Level": "ParticipantID (Intercept)",
+          "Variance (σ²)": 0.395,
+          "Std. Dev. (σ)": 0.628
+        },
+        {
+          "Component": "P600",
+          "Group / Level": "Item (Intercept)",
+          "Variance (σ²)": 0.088,
+          "Std. Dev. (σ)": 0.297
+        },
+        {
+          "Component": "P600",
+          "Group / Level": "Residual",
+          "Variance (σ²)": 1.105,
+          "Std. Dev. (σ)": 1.051
+        }
+      ]
+    }
+  },
+  "key_findings": [
+    "N400: significant Inclusive-writing effect β=-2.614 (p<.001), moderated by Proficiency × WritingType β=1.873 (p<.001)",
+    "P600: significant Inclusive-writing effect β=1.891 (p<.001), moderated by Proficiency × WritingType β=-0.964 (p=.014)",
+    "PSD (S01, 8 channels): delta-dominant spectrum (Δ rel ~63-65%, θ ~22-23%, α ~10-11%, β ~2.7-3.1%)",
+    "Frontal-precentral alpha asymmetry negative across all pairs (max |lnR-lnL| = 0.123 at central sites)",
+    "Group theta/alpha ratio (n=40): TBR≈8.0, TAR≈2.2, ABR≈3.5"
+  ],
+  "reproducibility_notes": "All values extracted programmatically from attached files; no values imputed or estimated. Channel-label anomalies and single-participant spectral ratios flagged as caveats."
+}

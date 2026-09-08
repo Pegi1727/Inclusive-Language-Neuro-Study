@@ -1,0 +1,108 @@
+# Cross-Validation Audit Report — comprehensive_neuro_statistical_results.xlsx
+
+## Verdict: **C — Partially Inconsistent**
+PSD/Ratio/Asymmetry sheets are perfectly consistent and match the CSVs exactly.
+BUT the LMM coefficients CANNOT be reconstructed from ERP_Raw_Clean cell means
+(all key coefficients off by 0.7–2.1, far beyond rounding tolerance), and the
+reported Item random-effect variance is inconsistent with the data (factor ~400).
+
+---
+
+## 1) Sheet structure
+| Sheet | Shape |
+|---|---|
+| ERP_Raw_C Shape |
+|---|---|
+| ERP_Raw_Clean | (160 (4, 7) |
+| LMM_P600_Model | (4, 7) |
+| Random_Effects_VarCorr | (6, 4) |
+| EEG_PSD_Summary | (8, 10) |
+| EEG_Ratios_Dynamics | (8, 6) |
+| Hemispheric_Asymmetry | (4, 5) |
+
+## 2) ERP_Raw_Clean — structure: ALL CHECKS PASS
+- 40 unique participants, P01–P40 ✓
+- Items: Item1, Item2 (2) ✓ | WritingType: Generic/Inclusive ✓ | Electrode: Pz only ✓
+- Proficiency: P01–P20 = High, P21–P40 = Low ✓
+- Every participant has exactly 4 rows (2 WritingType × 2 Items), all at Pz ✓
+
+### Cell means (mean over 2 items × 20 participants per cell)
+| Proficiency | WritingType | N400 | P600 |
+|---|---|---|---|
+| High | Generic | -3.1100 | 1.0700 |
+| High | Inclusive | -4.2175 | 2.1825 |
+| Low | Generic | -3.2675 | 1.2175 |
+| Low | Inclusive | -6.9875 | 4.2200 |
+| **Overall** | | **-4.3956** | **2.1725** |
+
+## 3) LMM coefficient reconstruction — ❌ FAILS
+| Term | N400 rec | N400 rep | diff | | P600 rec | P600 rep | diff |
+|---|---|---|---|---|---|---|---|
+| Intercept | -3.2675 | -1.152116** | | 1.217 | 1.2175 | 0.842 | **+0.376** |
+| Proficiency[High] | +0.1575 | +0.421 | **-0.264** | | -0.1475 | -0.215 | +0.068 |
+| WritingType[Inclusive] | -3.7200 | -2.614 | **-1.106** | | 3.0025 | 1.891 | **+1.112** |
+| Interaction | +2.6125 | +1.873 | **+0.740** | | -1.8900 | -0.964 | **-0.926** |
+
+Pattern of differences: Intercept N400 is off by exactly +2.1155; i.e. reported
+N400 intercept ≈ raw-mean intercept + 2.12 (a constant shift, consistent with a
+different baseline/scaling, but NOT with the stated model on these data).
+Interaction differs by 0.74–0.93 → the qualitative direction (large Inclusive
+effect larger for Low prof) is preserved, but magnitudes are not reproducible.
+**Tolerance ±0.05 exceeded for essentially every coefficient.**
+
+## 4) Random-effect variances — Item variance implausible
+| Component | Reported σ² | Observed |
+|---|---|---|
+| N400 Participant | 0.482 | var(subj means) = 0.556 ✓ plausible |
+| N400 Item | 0.115 | var(item means) = **0.0003** ✗ (factor ~400 too large) |
+| N400 Residual | 1.240 | total var = 2.464 (residual ≈ half, plausible) |
+| P600 Participant | 0.395 | var(subj means) = 0.315 ✓ plausible |
+| P600 Item | 0.088 | var(item means) = **0.0063** ✗ (factor ~14 too large) |
+| P600 Residual | 1.105 | total var = 1.622 (plausible) |
+
+Item random-intercept variances are order-of-magnitude larger than the observed
+between-item variance → implausible / not reproducible from these data.
+
+## 5) PSD / ratios / asymmetry — ✅ ALL PASS EXACTLY
+- sum(4 abs bands) − Total_Power = 0.0000 for all 8 channels (exact to 1e-15).
+- rel% sums = 100.000 for all channels.
+- Recomputed TBR/TAR/ABR from abs powers match EEG_Ratios_Dynamics to 4 decimals
+  (max diff ~1e-15, pure rounding).
+- All 16 asymmetry values (alpha/theta/beta/total × 4 pairs) reconstruct to 5
+  decimals as ln(P_R) − ln(P_L). HAI formula confirmed.
+
+## 6) Cross-check with external CSVs — confirmed.
+
+## 6) Cross-check with external CSVs — PSD & asymmetry: EXsd_summary.csv: max abs diff = 7.1e-15 (identical).
+- Hemispheric_Asymmetry vs eeg_hemispheric_asymmetry.csv: max diff = 0.0.
+- spectral_power_data.csv (40 subjects): mean TBR=7.84, TAR=2.20, ABR=3.60 —
+  lies inside the channel-level Excel ranges (TBR 7.24–8.84, TAR 2.03–2.34,
+  ABR 3.29–4.16). Consistent scale; not a per-channel match (different unit of
+  analysis: subjects vs channels).
+
+## 7) RMS / Peak-to-P 2560-sampleeg_real_waveforms.csv — ❌ DO NOT MATCH
+Recomputed from 2560-sample waveform per channel:
+| Channel | RMS rec | RMS rep | PTP rec | PTP rep |
+|---|---|---|---|---|
+| Fp1 | 9.184 | 9.675 | 37.02 | 41.71 |
+| Fp2 | 9.083 | 9.677 | 40.05 | 42.08 |
+| F3 | 9.073 | 12.306 | 48.95 | 67.74 |
+| F4 | 9.099 | 11.167 | 48.39 | 61.35 |
+| C3 | 9.117 | 12.037 | 40.48 | 67.84 |
+| C4 | 9.105 | 9.116 | 40.39 | 40.15 |
+| O1 | 9.055 | 10.990 | 40.55 | 66.54 |
+| O2 | 9.124 | 9.505 | 38.59 | 43.31 |
+
+Only C4 (RMS) approximately matches; all others differ (RMS up to +33%,
+PTP up to +64%). The reported RMS/PTP were NOT computed from this waveform file.
+
+---
+
+## Summary
+- Consistent / reproducible: sheet structure, ERP cell structure, PSD sums,
+  TBR/TAR/ABR, HAI asymmetries, and the two PSD/asymmetry CSVs.
+- Inconsistent / irreproducible: LMM fixed-effect coefficients (all off by
+  ≫ tolerance, esp. N400 intercept +2.12 and interaction +0.74), Item
+  random-effect variances (implausible), and RMS/Peak-to-Peak vs waveform CSV.
+- Recommendation: regenerate/recheck the LMM sheets and EEG_Ratios_Dynamics
+  RMS/PTP columns before submission (Case C for those parts).
